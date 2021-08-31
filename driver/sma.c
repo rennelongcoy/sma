@@ -7,7 +7,9 @@ MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Simple Moving Average (SMA) Device Driver");
 MODULE_AUTHOR("Rennel Ongcoy");
 
-#define SMA_BUFFER_SIZE 128
+#define SMA_WINDOW_SIZE (5)
+
+#define SMA_BUFFER_SIZE (128)
 unsigned char sma_buffer[SMA_BUFFER_SIZE];
 
 /* Device Number */
@@ -19,12 +21,43 @@ struct cdev sma_cdev;
 /* File operations */
 ssize_t sma_read(struct file *filp, char __user *buff, size_t count, loff_t *f_pos)
 {
-    return 0;
+    pr_info("[sma] %s: Read SMA output sequence - START\n", __func__);
+
+    copy_to_user((void *)buff, &sma_buffer, count);
+
+    pr_info("[sma] %s: Read SMA output sequence - COMPLETE\n", __func__);
+    return count;
 }
 
 ssize_t sma_write(struct file *filp, const char __user *buff, size_t count, loff_t *f_pos)
 {
-    return 0;
+    pr_info("[sma] %s: Write SMA input sequence - START\n", __func__);
+
+    unsigned char sma_input_sequence[SMA_BUFFER_SIZE] = {};
+    copy_from_user(sma_input_sequence, buff, count);
+
+    int i = 0;
+    for (i = 0; i < count; ++i) {
+        int sum = 0;
+        if (i < (SMA_WINDOW_SIZE - 1)) { /* for 1st 4 elements */
+            int j;
+            for (j = 0; j < (i + 1); ++j) {
+                sum += sma_input_sequence[j];
+            }
+            sma_buffer[i] = sum / (i + 1);
+        }
+        else { /* for 5th element onwards */
+            int j;
+            for (j = i - (SMA_WINDOW_SIZE - 1); j < (i + 1); ++j) {
+                sum += sma_input_sequence[j];
+            }
+            sma_buffer[i] = sum / SMA_WINDOW_SIZE;
+        }
+        pr_info("[sma] %s: sma_buffer[%d] = %d\n", __func__, i, sma_buffer[i]);
+    }
+
+    pr_info("[sma] %s: Write SMA input sequence - COMPLETE\n", __func__);
+    return count;
 }
 
 struct file_operations sma_fops = {
