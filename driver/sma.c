@@ -7,14 +7,30 @@ MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Simple Moving Average (SMA) Device Driver");
 MODULE_AUTHOR("Rennel Ongcoy");
 
+#define SMA_BUFFER_SIZE 128
+unsigned char sma_buffer[SMA_BUFFER_SIZE];
+
 /* Device Number */
 dev_t device_number;
 
-/* cdev variable */
+/* Cdev */
 struct cdev sma_cdev;
 
 /* File operations */
-struct file_operations sma_fops;
+ssize_t sma_read(struct file *filp, char __user *buff, size_t count, loff_t *f_pos)
+{
+    return 0;
+}
+
+ssize_t sma_write(struct file *filp, const char __user *buff, size_t count, loff_t *f_pos)
+{
+    return 0;
+}
+
+struct file_operations sma_fops = {
+    .read = sma_read,
+    .write = sma_write
+};
 
 /* Class create */
 struct class *sma_class;
