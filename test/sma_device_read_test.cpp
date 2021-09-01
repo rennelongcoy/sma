@@ -33,12 +33,25 @@ TEST(sma_device_read_test, Read_exceed_size)
 {
     SmaDevice sma;
     const unsigned int SEQUENCE_LENGTH = 129;
-    int ret = -1;
+    int ret = 0;
 
     std::vector<uint8_t> output_sequence(SEQUENCE_LENGTH, 0);
     ret = sma.read(output_sequence.data(), SEQUENCE_LENGTH);
 
-    EXPECT_EQ(ret, SEQUENCE_LENGTH);
+    EXPECT_EQ(ret, -1);
+    EXPECT_EQ(errno, EFAULT);
+}
+
+TEST(sma_device_read_test, Read_invalid_output_buffer)
+{
+    SmaDevice sma;
+    const unsigned int SEQUENCE_LENGTH = 128;
+    int ret = 0;
+
+    ret = sma.read(nullptr, SEQUENCE_LENGTH);
+
+    EXPECT_EQ(ret, -1);
+    EXPECT_EQ(errno, EFAULT);
 }
 
 }
