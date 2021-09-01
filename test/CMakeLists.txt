@@ -15,7 +15,10 @@ FetchContent_MakeAvailable(googletest)
 
 # Executable to run all tests
 add_executable("${CMAKE_PROJECT_NAME}_tests"
-               sma_device_test.cpp    ${CMAKE_SOURCE_DIR}/src/sma_device.cpp)
+               ${CMAKE_SOURCE_DIR}/src/sma_device.cpp
+               sma_device_calculation_test.cpp
+               sma_device_read_test.cpp
+               sma_device_write_test.cpp)
 
 # Link pthread library to enable std::thread
 target_link_libraries("${CMAKE_PROJECT_NAME}_tests" gtest_main)
