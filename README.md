@@ -81,6 +81,6 @@ The user space main and test app are located at /src and /test directories, resp
 
 4. The kernel driver was tested with unsigned values. So each element's value would be in the range of 0-255.
 
-5. Error-handling is focused on handling EFAULT in cases of possible invalid memory range accesses.
+5. Error-handling is focused on handling EFAULT in cases of invalid memory range accesses.
 
-6. In the userland applciations, the write and read operations are always consecutive. There is currently on handling for race conditions in both user space or kernel space.
+6. In the userland applications, the write and read operations are always consecutive. There is currently no handling for race conditions in both user space or kernel space in the case of write and read processes at the same tim.

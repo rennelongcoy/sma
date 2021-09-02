@@ -23,11 +23,7 @@ ssize_t sma_read(struct file *filp, char __user *buff, size_t count, loff_t *f_p
 {
     pr_info("[sma] %s: Read SMA output sequence - START\n", __func__);
 
-    if (count > (size_t) SMA_BUFFER_SIZE) {
-        return -EFAULT;
-    }
-
-    if (copy_to_user((void *)buff, sma_internal_buffer, count) != 0) {
+    if (copy_to_user(buff, sma_internal_buffer, count) != 0) {
         return -EFAULT;
     }
 
@@ -40,10 +36,6 @@ ssize_t sma_write(struct file *filp, const char __user *buff, size_t count, loff
     unsigned char sma_input_sequence[SMA_BUFFER_SIZE] = {};
 
     pr_info("[sma] %s: Write SMA input sequence - START\n", __func__);
-
-    if (count > (size_t) SMA_BUFFER_SIZE) {
-        return -EFAULT;
-    }
 
     if (copy_from_user(sma_input_sequence, buff, count) != 0) {
         return -EFAULT;
