@@ -24,6 +24,7 @@ ssize_t sma_read(struct file *filp, char __user *buff, size_t count, loff_t *f_p
     pr_info("[sma] %s: Read SMA output sequence - START\n", __func__);
 
     if (copy_to_user(buff, sma_internal_buffer, count) != 0) {
+        pr_err("[sma] %s: Read SMA output sequence - copy_to_user() failed\n", __func__);
         return -EFAULT;
     }
 
@@ -38,6 +39,7 @@ ssize_t sma_write(struct file *filp, const char __user *buff, size_t count, loff
     pr_info("[sma] %s: Write SMA input sequence - START\n", __func__);
 
     if (copy_from_user(sma_input_sequence, buff, count) != 0) {
+        pr_err("[sma] %s: Write SMA input sequence - copy_from_user() failed\n", __func__);
         return -EFAULT;
     }
 
@@ -109,10 +111,12 @@ alloc_chrdev_region_fail:
 static void __exit sma_exit(void)
 {
     pr_info("[sma] - EXIT START\n");
+
     device_destroy(sma_class, device_number);
     class_destroy(sma_class);
     cdev_del(&sma_cdev);
     unregister_chrdev_region(device_number, 1);
+
     pr_info("[sma] - EXIT SUCCESSFUL\n");
 }
 

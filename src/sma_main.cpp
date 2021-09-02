@@ -1,7 +1,7 @@
 
 #include "sma_device.hpp"
 
-const int SEQUENCE_SIZE = 8;
+const size_t SEQUENCE_SIZE = 8;
 
 int main()
 {

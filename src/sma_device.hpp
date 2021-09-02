@@ -10,8 +10,8 @@
 class SmaDevice {
     public:
         SmaDevice();
-        int read(uint8_t output_sequence[], int size);
-        int write(uint8_t input_sequence[], int size);
+        int read(uint8_t output_sequence[], size_t size);
+        int write(uint8_t input_sequence[], size_t size);
         ~SmaDevice();
     private:
         int fd;
