@@ -70,16 +70,16 @@ The user space main and test app are located at /src and /test directories, resp
     * Output = 10, 10, 23, 43, 54, 92, 110, 100
 
     The 4th element of the output sequence is actually 42.5.
-    
+
     In current implementation of the Kernel driver, regular integer division was used and the result would give 42 and not 43.
-    
+
     Any decimal and remainders in SMA calculations were not handled.
-    
+
 2. In the kernel driver, the window size for calculating the moving average is fixed to be 5.
 
 3. In the kernel driver, the maximum sequence length that is supported is set to 128 bytes.
 
-4. The kernel driver was tested with unsigned values. So each element would have the range of 0-255.
+4. The kernel driver was tested with unsigned values. So each element's value would be in the range of 0-255.
 
 5. Error-handling is focused on handling EFAULT in cases of possible invalid memory range accesses.
 

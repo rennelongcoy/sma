@@ -68,21 +68,50 @@ struct device *sma_device;
 
 static int __init sma_init(void)
 {
+    int err = 0;
+
     pr_info("[sma] - INIT START\n");
 
-    alloc_chrdev_region(&device_number, 0, 1, "sma_driver");
+    err = alloc_chrdev_region(&device_number, 0, 1, "sma_driver");
+    if (err < 0) {
+        pr_err("[sma] - INIT alloc_chrdev_region() failed\n");
+        goto alloc_chrdev_region_fail;
+    }
 
     cdev_init(&sma_cdev, &sma_fops);
     sma_cdev.owner = THIS_MODULE;
 
-    cdev_add(&sma_cdev, device_number, 1);
+    err = cdev_add(&sma_cdev, device_number, 1);
+    if (err < 0) {
+        pr_err("[sma] - INIT cdev_add() failed\n");
+        goto cdev_add_fail;
+    }
 
     sma_class = class_create(THIS_MODULE, "sma_class");
+    if (IS_ERR(sma_class)) {
+        pr_err("[sma] - INIT class_create() failed\n");
+        err = PTR_ERR(sma_class);
+        goto class_create_fail;
+    }
 
     sma_device = device_create(sma_class, NULL, device_number, NULL, "sma");
+    if (IS_ERR(sma_device)) {
+        pr_err("[sma] - INIT device_create() failed\n");
+        err = PTR_ERR(sma_device);
+        goto device_create_fail;
+    }
 
     pr_info("[sma] - INIT SUCCESSFUL\n");
     return 0;
+
+device_create_fail:
+    class_destroy(sma_class);
+class_create_fail:
+    cdev_del(&sma_cdev);
+cdev_add_fail:
+    unregister_chrdev_region(device_number, 1);
+alloc_chrdev_region_fail:
+    return err;
 }
 
 static void __exit sma_exit(void)
