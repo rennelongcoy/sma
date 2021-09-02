@@ -55,7 +55,7 @@ The user space applications consist of the following:
     - This executes tests using the Google Test framework to test usage of the kernel driver under three categories:
       - Moving Average calculation
       - Read operation
-      - Write oepration
+      - Write operation
 
 The user space main and test app are located at /src and /test directories, respectively.
 
