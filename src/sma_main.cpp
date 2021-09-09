@@ -1,27 +1,57 @@
 
-#include "sma_device.hpp"
+#include <cstdio>
+#include <fstream>
+#include <vector>
 
-const size_t SEQUENCE_SIZE = 8;
+#include "sma_device.hpp"
 
 int main()
 {
     SmaDevice sma;
+    int ret = 0;
 
-    uint8_t input_sequence[SEQUENCE_SIZE]{10, 10, 50, 100, 100, 200, 100, 1};
-    sma.write(input_sequence, SEQUENCE_SIZE);
+    // Read from an input file
+    std::ifstream input_file("../input/input.txt");
+    std::vector<uint8_t> input_sequence;
+    unsigned int data;
+    while (input_file >> data) {
+        input_sequence.push_back((uint8_t) data);
+    }
+
+    // Print input sequence
     std::cout << "Input Sequence: ";
-    for (unsigned int i = 0; i < SEQUENCE_SIZE; ++i) {
-        std::cout << (int) input_sequence[i] << " ";
+    for (uint8_t x : input_sequence) {
+        std::cout << (int) x << " ";
     }
     std::cout << std::endl;
 
-    uint8_t output_sequence[SEQUENCE_SIZE]{0};
-    sma.read(output_sequence, SEQUENCE_SIZE);
+    // Write to device driver
+    ret = sma.write(input_sequence.data(), input_sequence.size());
+    if (ret == -1) {
+        perror("Write to device driver failed");
+        return -1;
+    }
+
+    // Read results from device driver
+    std::vector<uint8_t> output_sequence(input_sequence.size());
+    ret = sma.read(output_sequence.data(), input_sequence.size());
+    if (ret == -1) {
+        perror("Read from device driver failed");
+        return -1;
+    }
+
+    // Print output sequence
     std::cout << "Output Sequence: ";
-    for (unsigned int i = 0; i < SEQUENCE_SIZE; ++i) {
-        std::cout << (int) output_sequence[i] << " ";
+    for (uint8_t x : output_sequence) {
+        std::cout << (int) x << " ";
     }
     std::cout << std::endl;
+
+    // Write to an output file
+    std::ofstream output_file("../output/output.txt");
+    for (uint8_t x : output_sequence) {
+        output_file << (int) x << std::endl;
+    }
 
     return 0;
 }

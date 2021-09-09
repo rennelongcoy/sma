@@ -20,6 +20,6 @@ add_executable("${CMAKE_PROJECT_NAME}_tests"
                sma_device_read_test.cpp
                sma_device_write_test.cpp)
 
-# Link pthread library to enable std::thread
+# Link to gtest
 target_link_libraries("${CMAKE_PROJECT_NAME}_tests" gtest_main)
 add_test(NAME "${CMAKE_PROJECT_NAME}_tests" COMMAND "${CMAKE_PROJECT_NAME}_tests")
