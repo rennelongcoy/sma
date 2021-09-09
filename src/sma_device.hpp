@@ -7,6 +7,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+/* TODO: Improve class public interfaces */
+
 class SmaDevice {
     public:
         SmaDevice();

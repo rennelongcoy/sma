@@ -1,5 +1,7 @@
 #include "sma_device.hpp"
 
+/* TODO: Improve class public interfaces */
+
 SmaDevice::SmaDevice()
 {
     fd = open("/dev/sma", O_RDWR);

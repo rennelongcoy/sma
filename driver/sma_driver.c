@@ -10,6 +10,8 @@ MODULE_DESCRIPTION("Simple Moving Average (SMA) Device Driver");
 MODULE_AUTHOR("Rennel Ongcoy");
 
 #define SMA_BUFFER_SIZE (128)
+
+/* TODO: Improve organization of global variables */
 unsigned char sma_internal_buffer[SMA_BUFFER_SIZE];
 
 /* Device Number */

@@ -5,6 +5,8 @@
 
 #include "sma_device.hpp"
 
+/* TODO: Handle other possible errors in file I/O */
+
 int main()
 {
     SmaDevice sma;
