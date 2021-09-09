@@ -16,6 +16,7 @@ This project was tested to work with below environment:
 |Kernel Release| 5.11.0-27-generic|
 |Linux Headers Package| linux-headers-5.11.0-27-generic (Version: 5.11.0-27.29~20.04.1)|
 |Secure Boot in BIOS| OFF (to be able to load out-of-tree Kernel modules)|
+|CMake| 3.16.3|
 
 # III. Linux Kernel Driver
 
