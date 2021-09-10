@@ -73,11 +73,11 @@ The user space main and test app are located at /src and /test directories, resp
 
 * Execution
 
-  To execute the main app from project root directory, run:
-  > sudo ./bin/sma_main
+  To execute the main app from project bin/ directory, run:
+  > sudo ./sma_main
 
-  To execute the test app from project root directory, run:
-  > sudo ./bin/sma_tests
+  To execute the test app from project bin/ directory, run:
+  > sudo ./sma_tests
 
 # V. Assumptions and Limitations
 1. In the provided sample sequences below from the requirement document,
